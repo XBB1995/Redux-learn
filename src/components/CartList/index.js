@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 
 import {
   increment,
-  decrement
+  decrement,
+  decrementAsync
 } from '../../actions/cart'
 
 // mapStateTopProps 这里的state实际上就是store.getState()的值
@@ -16,7 +17,7 @@ const mapState = (state) => {
 }
 
 // 使用修饰器模式 HOC
-@connect(mapState, { increment, decrement })
+@connect(mapState, { increment, decrement, decrementAsync })
 class CartList extends Component {
   render() {
     // console.log(this.props)
@@ -40,6 +41,7 @@ class CartList extends Component {
                   <td>{item.title}</td>
                   <td>{item.price}</td>
                   <td>
+                    <button onClick={this.props.decrementAsync.bind(this, item.id)}>decrement</button>
                     <button onClick={
                       () => {
                         this.props.decrement(item.id)
