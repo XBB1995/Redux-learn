@@ -1,8 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
 
-import {
-  CartList
-} from './components'
+import { CartList } from "./components"
 
 export default class App extends Component {
   render() {
@@ -15,4 +13,3 @@ export default class App extends Component {
     )
   }
 }
-

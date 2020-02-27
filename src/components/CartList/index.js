@@ -1,18 +1,14 @@
-import React, { Component } from 'react'
+import React, { Component } from "react"
 // connect 方法执行之后是一个高阶组件
-import { connect } from 'react-redux'
+import { connect } from "react-redux"
 
-import {
-  increment,
-  decrement,
-  decrementAsync
-} from '../../actions/cart'
+import { increment, decrement, decrementAsync } from "../../actions/cart"
 
 // mapStateTopProps 这里的state实际上就是store.getState()的值
-const mapState = (state) => {
+const mapState = state => {
   // return的内容 在组件里就可以通过this.props来获取
   return {
-    cartList: state.cart
+    cartList: state.getIn(["cart"])
   }
 }
 
@@ -33,30 +29,41 @@ class CartList extends Component {
           </tr>
         </thead>
         <tbody>
-          {
-            this.props.cartList.map(item => {
-              return (
-                <tr key={item.id}>
-                  <td>{item.id}</td>
-                  <td>{item.title}</td>
-                  <td>{item.price}</td>
-                  <td>
-                    <button onClick={this.props.decrementAsync.bind(this, item.id)}>decrement</button>
-                    <button onClick={
-                      () => {
-                        this.props.decrement(item.id)
-                      }
-                    }
-                    >-</button>
-                    <span>{item.amount}</span>
-                    <button onClick={this.props.increment.bind(this, item.id)}
-                    >+</button>
-                  </td>
-                  <td><input type="checkbox"></input></td>
-                </tr>
-              )
-            })
-          }
+          {this.props.cartList.map(item => {
+            return (
+              <tr key={item.get("id")}>
+                <td>{item.get("id")}</td>
+                <td>{item.get("title")}</td>
+                <td>{item.get("price")}</td>
+                <td>
+                  <button
+                    onClick={this.props.decrementAsync.bind(
+                      this,
+                      item.get("id")
+                    )}
+                  >
+                    decrement
+                  </button>
+                  <button
+                    onClick={() => {
+                      this.props.decrement(item.get("id"))
+                    }}
+                  >
+                    -
+                  </button>
+                  <span>{item.get("amount")}</span>
+                  <button
+                    onClick={this.props.increment.bind(this, item.get("id"))}
+                  >
+                    +
+                  </button>
+                </td>
+                <td>
+                  <input type="checkbox"></input>
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     )
